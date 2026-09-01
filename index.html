@@ -182,7 +182,7 @@ header#appHeader{
 /* 4. MAIN / FEED                 */
 /* ============================= */
 main{
-  padding-top:calc(var(--header-h) + 12px);
+  padding-top:calc(var(--header-h) + 80px);
   padding-bottom:calc(var(--nav-h) + 24px);
   min-height:100vh;
   max-width:1200px; margin:0 auto;
@@ -516,6 +516,13 @@ nav#bottomNav{
 <!-- MAIN CONTENT                   -->
 <!-- ============================= -->
 <main id="mainContent">
+  <!-- Section Heading Only -->
+  <div class="feed-header">
+    <div class="section-title-wrap">
+      <h2 class="section-title" data-i18n="nearYouTitle">अपने आसपास के प्रोडक्ट</h2>
+      <p class="section-subtitle" data-i18n="nearYouSubtitle">आपके शहर में बिक्री के लिए उपलब्ध हालिया विज्ञापन</p>
+    </div>
+  </div>
   <div class="feed-grid" id="feedGrid"></div>
 </main>
 
@@ -750,10 +757,11 @@ const DICT = {
     toastPosted:"Ad posted successfully!", toastDeleted:"Ad deleted", toastSignedIn:"Signed in successfully",
     toastSignedOut:"Signed out", toastError:"Something went wrong. Try again.", toastFillFields:"Please fill all fields correctly",
     toastAddPhoto:"Please add at least one photo", toastMaxPhotos:"You can add up to 6 photos",
-    confirmDelete:"Delete this ad permanently?", back:"Back", photosLbl:"photos"
+    confirmDelete:"Delete this ad permanently?", back:"Back", photosLbl:"photos",
+    nearYouTitle:"Products Near You", nearYouSubtitle:"Recent ads available in your city"
   },
   hi: {
-    appName:"रीशॉप इंडिया", searchPh:"वस्तु या ब्रांड खोजें...",
+    appName:"ReShop India", searchPh:"वस्तु या ब्रांड खोजें...",
     catAll:"सभी", catHome:"घर", catElectric:"इलेक्ट्रिक", catFashion:"फैशन", catMotors:"मोटर्स", catMobiles:"मोबाइल",
     navHome:"होम", navProfile:"प्रोफाइल", sellItem:"वस्तु बेचें",
     signInRequired:"साइन इन आवश्यक है", authCopy:"अपनी वस्तु बेचने और विज्ञापन प्रबंधित करने के लिए Google से साइन इन करें।",
@@ -775,7 +783,8 @@ const DICT = {
     toastPosted:"विज्ञापन सफलतापूर्वक पोस्ट हुआ!", toastDeleted:"विज्ञापन हटाया गया", toastSignedIn:"सफलतापूर्वक साइन इन हुआ",
     toastSignedOut:"साइन आउट हो गया", toastError:"कुछ गलत हो गया। पुनः प्रयास करें।", toastFillFields:"कृपया सभी फ़ील्ड सही ढंग से भरें",
     toastAddPhoto:"कृपया कम से कम एक फ़ोटो जोड़ें", toastMaxPhotos:"आप अधिकतम 6 फ़ोटो जोड़ सकते हैं",
-    confirmDelete:"इस विज्ञापन को स्थायी रूप से हटाएं?", back:"वापस", photosLbl:"फ़ोटो"
+    confirmDelete:"इस विज्ञापन को स्थायी रूप से हटाएं?", back:"वापस", photosLbl:"फ़ोटो",
+    nearYouTitle:"अपने आसपास के प्रोडक्ट", nearYouSubtitle:"आपके शहर में बिक्री के लिए उपलब्ध हालिया विज्ञापन"
   }
 };
 function t(key){ return (DICT[currentLang] && DICT[currentLang][key]) || DICT.en[key] || key; }
