@@ -182,10 +182,22 @@ header#appHeader{
 /* 4. MAIN / FEED                 */
 /* ============================= */
 main{
-  padding-top:calc(var(--header-h) + 80px);
+  padding-top:calc(var(--header-h) + 64px);
   padding-bottom:calc(var(--nav-h) + 24px);
   min-height:100vh;
-  max-width:1200px; margin:0 auto;
+  max-width:1200px; 
+  margin:0 auto;
+}
+
+.feed-header{
+  padding:0 16px 8px;
+}
+
+.section-title{
+  margin:0;
+  font-size:1.1rem;
+  font-weight:700;
+  color:var(--ink);
 }
 .feed-grid{
   display:grid; grid-template-columns:repeat(2, 1fr); gap:14px; padding:0 14px;
@@ -517,10 +529,7 @@ nav#bottomNav{
 <!-- ============================= -->
 <main id="mainContent">
   <div class="feed-header">
-  <div class="section-title-wrap">
     <h2 class="section-title" data-i18n="nearYouTitle">अपने आसपास के प्रोडक्ट</h2>
-    <p class="section-subtitle" data-i18n="nearYouSubtitle">आपके शहर में बिक्री के लिए उपलब्ध हालिया विज्ञापन</p>
-  </div>
   </div>
   <div class="feed-grid" id="feedGrid"></div>
 </main>
@@ -757,7 +766,7 @@ const DICT = {
     toastSignedOut:"Signed out", toastError:"Something went wrong. Try again.", toastFillFields:"Please fill all fields correctly",
     toastAddPhoto:"Please add at least one photo", toastMaxPhotos:"You can add up to 6 photos",
     confirmDelete:"Delete this ad permanently?", back:"Back", photosLbl:"photos",
-    nearYouTitle:"Products Near You", nearYouSubtitle:"Recent ads available in your city"
+    nearYouTitle:"Products Near You"
   },
   hi: {
     appName:"ReShop India", searchPh:"वस्तु या ब्रांड खोजें...",
@@ -783,7 +792,7 @@ const DICT = {
     toastSignedOut:"साइन आउट हो गया", toastError:"कुछ गलत हो गया। पुनः प्रयास करें।", toastFillFields:"कृपया सभी फ़ील्ड सही ढंग से भरें",
     toastAddPhoto:"कृपया कम से कम एक फ़ोटो जोड़ें", toastMaxPhotos:"आप अधिकतम 6 फ़ोटो जोड़ सकते हैं",
     confirmDelete:"इस विज्ञापन को स्थायी रूप से हटाएं?", back:"वापस", photosLbl:"फ़ोटो",
-    nearYouTitle:"अपने आसपास के प्रोडक्ट", nearYouSubtitle:"आपके शहर में बिक्री के लिए उपलब्ध हालिया विज्ञापन"
+    nearYouTitle:"अपने आसपास के प्रोडक्ट"
   }
 };
 function t(key){ return (DICT[currentLang] && DICT[currentLang][key]) || DICT.en[key] || key; }
