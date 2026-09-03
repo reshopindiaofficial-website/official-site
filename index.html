@@ -384,12 +384,33 @@ main{
 /* 5. BOTTOM NAV                  */
 /* ============================= */
 nav#bottomNav{
-  position:fixed; bottom:calc(14px + env(safe-area-inset-bottom)); left:50%; transform:translateX(-50%); z-index:500;
-  width:min(94%, 420px);
-  background:var(--card); border:1px solid var(--line);
-  border-radius:24px; box-shadow:var(--shadow-lg);
-  display:flex; align-items:center; justify-content:space-around; padding:8px 10px;
-  backdrop-filter:blur(14px);
+  position: fixed !important; 
+  bottom: 0 !important; /* Bottom offset bilkul zero kar diya */
+  left: 0 !important; 
+  right: 0 !important;
+  width: 90% !important; 
+  max-width: 400px !important;
+  margin: 0 auto !important; 
+  transform: none !important;
+  z-index: 500;
+  touch-action: pan-x pan-y;
+  
+  background: var(--card) !important; 
+  border: 1px solid var(--line) !important;
+  
+  /* Gemini Pill Capsule Shape Unchanged */
+  border-radius: 999px 999px 0 0 !important; 
+  
+  /* 3D Soft Shadow */
+  box-shadow: 0px -4px 20px rgba(0, 0, 0, 0.15) !important;
+    
+  display: flex !important; 
+  align-items: center !important; 
+  justify-content: space-around !important; 
+  
+  /* Height and Padding Unchanged */
+  padding: 10px 16px calc(6px + env(safe-area-inset-bottom)) !important; 
+  backdrop-filter: blur(16px);
 }
 .nav-item{
   display:flex; flex-direction:column; align-items:center; gap:2px; background:none; border:none;
@@ -405,7 +426,6 @@ nav#bottomNav{
   transition:transform .15s ease;
 }
 .nav-sell:active{transform:scale(.9);}
-
 /* ============================= */
 /* 6. MODALS                      */
 /* ============================= */
