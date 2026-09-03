@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=overlays-content">
+<meta name="color-scheme" content="light dark">
 <title>ReShop India — Buy &amp; Sell Pre-Loved Goods</title>
 <meta name="description" content="ReShop India — apna khud ka bazaar. Buy and sell used goods across India.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +14,7 @@
 /* 1. DESIGN TOKENS               */
 /* ============================= */
 :root{
+  color-scheme: light dark;
   --blue-600:#2563eb;
   --blue-500:#3b82f6;
   --blue-50:#eff6ff;
@@ -33,6 +35,18 @@
   --header-h:120px;
   --nav-h:76px;
   --font:'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* ऑटो डार्क मोड ओवरराइड फिक्स */
+html[data-theme="light"] {
+  color-scheme: light !important;
+  background-color: var(--bg) !important;
+  color: var(--ink) !important;
+}
+
+html[data-theme="light"] body {
+  background-color: var(--bg) !important;
+  color: var(--ink) !important;
 }
 /* True AMOLED-style dark mode: the page background sits at near-true-black
    (#090D16) while headers/cards/bottom-nav use a very slightly lighter
