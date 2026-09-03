@@ -2,7 +2,7 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=overlays-content">
 <title>ReShop India — Buy &amp; Sell Pre-Loved Goods</title>
 <meta name="description" content="ReShop India — apna khud ka bazaar. Buy and sell used goods across India.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -154,26 +154,68 @@ header#appHeader{
   letter-spacing:.2px;
 }
 .header-actions{display:flex; gap:8px; align-items:center;}
-.search-wrap{
-  position:relative; padding:0 16px 10px;
+.search-wrap {
+  position: relative; 
+  padding: 0 16px 10px;
 }
-.search-input{
-  width:100%; padding:11px 40px 11px 40px; border-radius:var(--radius-md);
-  border:1.5px solid var(--line); background:var(--bg); color:var(--ink);
-  font-size:.92rem; font-family:inherit; outline:none;
-  transition:border-color .15s ease, box-shadow .15s ease;
+
+.search-input {
+  width: 100%; 
+  padding: 11px 40px 11px 40px; 
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--line); 
+  background: var(--bg); 
+  color: var(--ink);
+  font-size: .92rem; 
+  font-family: inherit; 
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color .15s ease, box-shadow .15s ease;
 }
-.search-input:focus{border-color:var(--blue-500); box-shadow:0 0 0 4px var(--blue-50);}
-.search-icon{
-  position:absolute; left:28px; top:50%; transform:translateY(-50%);
-  color:var(--ink-faint); pointer-events:none;
+
+.search-input:focus {
+  border-color: var(--blue-500); 
+  box-shadow: 0 0 0 4px var(--blue-50);
 }
-.search-clear{
-  position:absolute; top:50%; right:26px; transform:translateY(-50%);
-  width:22px; height:22px; margin:0; padding:0; border-radius:50%; border:none;
-  background:var(--line); color:var(--ink-soft); font-size:.72rem; line-height:1;
-  display:none; align-items:center; justify-content:center;
-  box-sizing:border-box;
+
+.search-icon {
+  position: absolute; 
+  left: 28px; 
+  top: calc(50% - 5px); 
+  transform: translateY(-50%);
+  color: var(--ink-faint); 
+  pointer-events: none; 
+  display: flex; 
+  align-items: center;
+}
+
+/* एडिट किया गया सर्च एक्शन / क्लियर बटन */
+.search-clear {
+  position: absolute; 
+  top: calc(50% - 5px); 
+  right: 26px; 
+  transform: translateY(-50%);
+  width: 24px; 
+  height: 24px; 
+  margin: 0; 
+  padding: 0; 
+  border-radius: 50%; 
+  border: none;
+  background: var(--line); 
+  color: var(--ink-soft); 
+  font-size: .75rem; 
+  line-height: 1;
+  display: none; /* JS द्वारा display: flex में बदला जाएगा */
+  align-items: center; 
+  justify-content: center;
+  box-sizing: border-box; 
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+
+.search-clear:active {
+  background: var(--ink-faint);
+  color: var(--card);
 }
 .nearby-banner{
   position:sticky; top:calc(var(--header-h) + 8px); z-index:40;
@@ -535,6 +577,22 @@ nav#bottomNav{
 @media (prefers-reduced-motion: reduce){
   *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
 }
+
+/* ==========================================
+   FORCE HIDE BOTTOM ELEMENTS ON KEYBOARD FOCUS
+   ========================================== */
+
+/* जब भी किसी इनपुट या सर्च बॉक्स पर टैप/फोकस हो */
+body:has(input:focus) .bottom-nav,
+body:has(input:focus) [class*="bottom"],
+body:has(input:focus) [class*="load-more"],
+body:has(input:focus) button[class*="load"],
+body:has(input:focus) .sticky,
+body:has(input:focus) .fixed {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
 </style>
 </head>
 <body>
@@ -573,18 +631,25 @@ nav#bottomNav{
     </button>
   </div>
   <div class="search-wrap" id="searchWrap">
-    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    <input type="text" class="search-input" id="searchInput" data-i18n-ph="searchPh" placeholder="Search for items, brands...">
-    <button class="search-clear" id="searchClear" aria-label="Clear search">✕</button>
-  </div>
-  <div class="pills-scroll" id="categoryPills">
-    <button class="pill active" data-cat="All" data-i18n="catAll">All</button>
-    <button class="pill" data-cat="Home" data-i18n="catHome">Home</button>
-    <button class="pill" data-cat="Electric" data-i18n="catElectric">Electric</button>
-    <button class="pill" data-cat="Fashion" data-i18n="catFashion">Fashion</button>
-    <button class="pill" data-cat="Motors" data-i18n="catMotors">Motors</button>
-    <button class="pill" data-cat="Mobiles" data-i18n="catMobiles">Mobiles</button>
-  </div>
+  <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none">
+    <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+    <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+  
+  <input type="text" class="search-input" id="searchInput" data-i18n-ph="searchPh" placeholder="Search for items, brands...">
+  
+  <!-- डायनामिक बटन जो बैक और क्लियर दोनों का काम करेगा -->
+  <button class="search-clear" id="searchClear" aria-label="Search action"></button>
+</div>
+
+<div class="pills-scroll" id="categoryPills">
+  <button class="pill active" data-cat="All" data-i18n="catAll">All</button>
+  <button class="pill" data-cat="Home" data-i18n="catHome">Home</button>
+  <button class="pill" data-cat="Electric" data-i18n="catElectric">Electric</button>
+  <button class="pill" data-cat="Fashion" data-i18n="catFashion">Fashion</button>
+  <button class="pill" data-cat="Motors" data-i18n="catMotors">Motors</button>
+  <button class="pill" data-cat="Mobiles" data-i18n="catMobiles">Mobiles</button>
+</div>
 </header>
 
 <!-- ============================= -->
@@ -2110,6 +2175,67 @@ window.addEventListener("load", ()=>{
   await restoreSellDraftIfAny();
   initFeed();
 })();
+</script>
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const searchBtn = document.getElementById('searchClear');
+
+  // SVG Icons
+  const ICON_KEYBOARD_DOWN = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>`;
+  const ICON_CLEAR = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>`;
+
+  // यूआई और आइकॉन्स अपडेट करने का फ़ंक्शन
+  function updateSearchUI() {
+    const isFocused = document.activeElement === searchInput;
+    const hasText = searchInput.value.trim().length > 0;
+
+    if (hasText) {
+      // 1. टाइपिंग होने पर X दिखाएँ
+      searchBtn.innerHTML = ICON_CLEAR;
+      searchBtn.style.display = 'flex';
+      searchBtn.dataset.mode = 'clear';
+    } else if (isFocused) {
+      // 2. खाली बॉक्स पर क्लिक/फोकस होने पर Down Arrow (Back) दिखाएँ
+      searchBtn.innerHTML = ICON_KEYBOARD_DOWN;
+      searchBtn.style.display = 'flex';
+      searchBtn.dataset.mode = 'blur';
+    } else {
+      // 3. अनफोकस्ड और खाली होने पर बटन छिपाएँ
+      searchBtn.style.display = 'none';
+    }
+  }
+
+  // इनपुट पर टाइपिंग और फोकस इवेंट्स
+  searchInput.addEventListener('focus', updateSearchUI);
+  searchInput.addEventListener('input', updateSearchUI);
+  searchInput.addEventListener('keyup', updateSearchUI);
+
+  // बटन पर क्लिक/टैप लॉजिक (mousedown का उपयोग किया गया है ताकि फोकस न टूटे)
+  searchBtn.addEventListener('mousedown', (e) => {
+    e.preventDefault(); 
+    const mode = searchBtn.dataset.mode;
+
+    if (mode === 'clear') {
+      // 1. इनपुट फ़ील्ड खाली करें
+      searchInput.value = '';
+      
+      // 2. 'input' इवेंट ट्रिगर करें ताकि आपकी यूज़र/आइटम लिस्ट तुरंत रीसेट हो जाए और खाली न दिखे
+      searchInput.dispatchEvent(new Event('input'));
+      
+      // 3. आइकॉन को तुरंत 'Back/Keyboard Down' में बदलें
+      updateSearchUI();
+      searchInput.focus();
+    } else if (mode === 'blur') {
+      // कीबोर्ड हटाएँ और बटन छुपाएँ
+      searchInput.blur();
+      updateSearchUI();
+    }
+  });
+
+  // फोकस हटने पर रीसेट (कीबोर्ड बंद होने की स्थिति में)
+  searchInput.addEventListener('blur', () => {
+    setTimeout(updateSearchUI, 200);
+  });
 </script>
 </body>
 </html>
