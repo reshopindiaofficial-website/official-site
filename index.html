@@ -607,6 +607,12 @@ body:has(input:focus) .fixed {
   visibility: hidden !important;
   opacity: 0 !important;
 }
+
+/* Instant Theme Switch Fix */
+.theme-switching,
+.theme-switching * {
+  transition: none !important;
+}
 </style>
 </head>
 <body>
@@ -1626,30 +1632,48 @@ document.getElementById("langHi").addEventListener("click", ()=>{
 });
 
 function applyTheme(theme){
+  // 1. ट्रांजिशन डिसेबल करें ताकि थीम तुरंत (0 सेकंड में) बदले
+  document.documentElement.classList.add("theme-switching");
+
   document.documentElement.setAttribute("data-theme", theme);
+  document.documentElement.style.colorScheme = theme;
   localStorage.setItem("reshop_theme", theme);
-  document.getElementById("themeSwitch").classList.toggle("on", theme==="dark");
+
+  const themeSwitch = document.getElementById("themeSwitch");
+  if(themeSwitch) {
+    themeSwitch.classList.toggle("on", theme === "dark");
+  }
 
   const sun = document.getElementById("themeIconSun");
   const moon = document.getElementById("themeIconMoon");
   if(sun && moon){
-    const isDark = theme==="dark";
+    const isDark = theme === "dark";
     sun.classList.toggle("hidden", isDark);
     moon.classList.toggle("hidden", !isDark);
-    const visibleIcon = isDark ? moon : sun;
-    // Restart the pop-in animation even if it was already applied once.
-    visibleIcon.classList.remove("pop");
-    void visibleIcon.offsetWidth;
-    visibleIcon.classList.add("pop");
   }
+
+  // 2. तुरंत क्लास हटाएं ताकि बाकी एनिमेशन नॉर्मल रहें
+  requestAnimationFrame(() => {
+    document.documentElement.classList.remove("theme-switching");
+  });
 }
-document.getElementById("themeSwitch").addEventListener("click", ()=>{
-  const cur = document.documentElement.getAttribute("data-theme");
-  applyTheme(cur==="dark" ? "light" : "dark");
-});
-document.getElementById("themeQuickBtn").addEventListener("click", ()=>{
-  const cur = document.documentElement.getAttribute("data-theme");
-  applyTheme(cur==="dark" ? "light" : "dark");
+
+// ऑटो इनीशियलाइजेशन
+(function initAppTheme() {
+  const savedTheme = localStorage.getItem("reshop_theme") || "light";
+  applyTheme(savedTheme);
+})();
+
+// इवेंट लिसनर्स (इंस्टेंट स्विच)
+["themeSwitch", "themeQuickBtn"].forEach(id => {
+  const btn = document.getElementById(id);
+  if(btn) {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const cur = document.documentElement.getAttribute("data-theme") || "light";
+      applyTheme(cur === "dark" ? "light" : "dark");
+    });
+  }
 });
 
 /* ==========================================================
