@@ -68,6 +68,13 @@
   --shadow-lg:0 20px 48px rgba(0,0,0,.7);
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html, body {
+  -webkit-text-size-adjust: 100% !important;
+  -moz-text-size-adjust: 100% !important;
+  -ms-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
+  touch-action: manipulation;
+  }
 /* ---------------------------------------------------------
    STRICT NATIVE APP LOCK: no browser-driven text resizing,
    no pull-to-refresh / overscroll bounce, no long-press image
