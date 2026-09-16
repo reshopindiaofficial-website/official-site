@@ -12,6 +12,33 @@
 <meta name="msapplication-tap-highlight" content="no">
 <title>ReShop India — Buy &amp; Sell Pre-Loved Goods</title>
 <meta name="description" content="ReShop India — apna khud ka bazaar. Buy and sell used goods across India.">
+<!-- Favicon: small brand "R" mark embedded directly as a data URI, so no
+     separate image file is needed for the tab icon to work. -->
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABnUlEQVR4nGNkwAYaMv9jFacGaJjOiMxlRJWkocU4HMI0IJYj2cc4IJYjASbCSmjtgAH0PcQBAwwG3AEsxCp0UFBj2B9fgCH+598/hg8/vjFcfvWMYdnl0wzzzx9n+Pv/H9EOoDgEWJiYGES4eBgcFdQYZvtGMywOSiBJP9kOCFw5k4GxMYtBfkINw8671+DikTomDKZS8rR3AAw8+viOoXbfZhQxCxlF+jmAgYGB4dnnj6iGMjLiUEkjB0jzCaDwr795QT8HyPIJMjQ5+sD5554/Zthz7wbR+onOhuhgfXg6Cv8/w3+GNdfOM2RvXcHw7z/xhStVCyIBDk4GFiZmkvRQlA3ZW/IYvJZOZfjw4zsDIwMjg6uSJsOWqCwGFibijaUoBH79/cOw/c5VhoIdq+FiRpKyDDlmDvRxAAwsvnSS4cqrZ3B+pY07AzcrG/0c8O//f4b6A1vgfDFuXoY8c0f6OYCBgYFh3fULDOeeP4bzS61dGfjZOQnqYxxtkIw6YNQB6H01+jtggAHEAQMVCg3TGZmQOfS2nIGBgQEABoNxFWrY17YAAAAASUVORK5CYII=">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<!-- Canonical: kept static so non-JS crawlers (WhatsApp/Facebook link
+     previews) also see it correctly. Per-product pages override this
+     via JS (see updateSeoMetaForProduct) for real browsers/Googlebot,
+     which DO execute JS. Must always match PRODUCTION_SITE_URL further
+     down in the script. -->
+<link rel="canonical" href="https://reshopindiaofficial-website.github.io/official-site/">
+<!-- Open Graph / WhatsApp / Facebook share preview (static defaults —
+     these bots don't run JavaScript, so this is what every shared
+     homepage link will show). og-image.png must be uploaded to the
+     repo root alongside this file for the preview photo to appear. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ReShop India">
+<meta property="og:title" content="ReShop India — Buy &amp; Sell Pre-Loved Goods">
+<meta property="og:description" content="ReShop India — apna khud ka bazaar. Buy and sell used goods across India.">
+<meta property="og:url" content="https://reshopindiaofficial-website.github.io/official-site/">
+<meta property="og:image" content="https://reshopindiaofficial-website.github.io/official-site/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_IN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ReShop India — Buy &amp; Sell Pre-Loved Goods">
+<meta name="twitter:description" content="ReShop India — apna khud ka bazaar. Buy and sell used goods across India.">
+<meta name="twitter:image" content="https://reshopindiaofficial-website.github.io/official-site/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
@@ -665,7 +692,7 @@ header#appHeader{
   display:grid; grid-template-columns:repeat(3, 1fr); gap:2px; padding:2px;
 }
 .explore-tile{
-  position:relative; aspect-ratio:1/1; overflow:hidden; background:var(--line); cursor:pointer;
+  position:relative; aspect-ratio:1/1; overflow:hidden; background:var(--line); cursor:pointer; display:block;
 }
 .explore-tile img{width:100%; height:100%; object-fit:cover;}
 .explore-empty{
@@ -857,7 +884,7 @@ header#appHeader{
   color:var(--blue-600); display:flex; align-items:center; justify-content:center; flex-shrink:0;
   box-shadow:var(--shadow-sm);
 }
-.card-body{padding:10px 12px 12px; display:flex; flex-direction:column; gap:5px; flex:1;}
+.card-body{padding:10px 12px 12px; display:flex; flex-direction:column; gap:5px; flex:1; color:inherit; text-decoration:none;}
 .card-price{
   display:inline-block; align-self:flex-start;
   background:var(--green-600); color:#fff; font-weight:800; font-size:.92rem;
@@ -2454,7 +2481,7 @@ function cardTemplate(post){
       </button>
       ${photoCount>1 ? `<span class="card-photocount">1/${photoCount}</span>` : ""}
     </div>
-    <div class="card-body" data-action="open-detail" data-id="${post.id}">
+    <a class="card-body" data-action="open-detail" data-id="${post.id}" href="${buildLocalProductUrl(post.id)}">
       <span class="card-price">${formatPrice(post.price)}</span>
       <div class="card-title">${escapeHtml(post.title)}</div>
       <div class="card-desc">${escapeHtml(post.description)}</div>
@@ -2472,8 +2499,7 @@ function cardTemplate(post){
           ${t("call")}
         </button>
       </div>
-    </div>
-  </div>`;
+    </a>  </div>`;
 }
 
 function updateNearbyBannerVisibility(){
@@ -3024,7 +3050,7 @@ document.addEventListener("touchmove", (e)=>{
 
 function exploreTileTemplate(post){
   const img = post.images[0];
-  return `<div class="explore-tile" data-id="${post.id}"><img src="${escapeHtml(img)}" alt="${escapeHtml(post.title)}" loading="lazy"></div>`;
+  return `<a class="explore-tile" data-id="${post.id}" href="${buildLocalProductUrl(post.id)}"><img src="${escapeHtml(img)}" alt="${escapeHtml(post.title)}" loading="lazy"></a>`;
 }
 function renderExploreGrid(){
   const posts = getExploreFilteredPosts();
@@ -3036,7 +3062,15 @@ function renderExploreGrid(){
 }
 exploreGrid.addEventListener("click", (e)=>{
   const tile = e.target.closest(".explore-tile");
-  if(tile) openDetailView(tile.dataset.id, "search");
+  if(!tile) return;
+  // .explore-tile is now a real <a href="?prod=..."> for crawler
+  // discovery — intercept only plain left-clicks for the instant SPA
+  // transition; ctrl/cmd/middle click still opens in a new tab normally.
+  const isPlainClick = e.button===0 && !e.ctrlKey && !e.metaKey && !e.shiftKey;
+  if(isPlainClick){
+    e.preventDefault();
+    openDetailView(tile.dataset.id, "search");
+  }
 });
 
 /* Shows a Clear (X) the instant text appears in the search box, same
@@ -3313,12 +3347,14 @@ if(exploreMicBtn){
 document.getElementById("feedGrid").addEventListener("click",(e)=>{
   const waBtn = e.target.closest('[data-action="whatsapp"]');
   if(waBtn){
-    e.stopPropagation();
+    e.preventDefault(); // waBtn/callBtn sit inside the card-body <a> now (real href, for
+    e.stopPropagation(); // crawlers) — preventDefault stops that link's own navigation
     window.open(`https://wa.me/${waBtn.dataset.phone}?text=${waBtn.dataset.msg}`, "_blank");
     return;
   }
   const callBtn = e.target.closest('[data-action="call"]');
   if(callBtn){
+    e.preventDefault();
     e.stopPropagation();
     window.location.href = `tel:${callBtn.dataset.phone}`;
     return;
@@ -3335,8 +3371,17 @@ document.getElementById("feedGrid").addEventListener("click",(e)=>{
     return;
   }
   const detailTrigger = e.target.closest('[data-action="open-detail"]');
+  // detailTrigger is now a real <a href="?prod=..."> (so Googlebot can
+  // discover and follow it while crawling the homepage). For a normal
+  // left-click we still want the instant, no-reload SPA transition, so
+  // we intercept it — but a ctrl/cmd/middle click is left alone so
+  // "open in new tab" keeps working exactly like any other link.
   if(detailTrigger){
-    openDetailView(detailTrigger.dataset.id);
+    const isPlainClick = e.button===0 && !e.ctrlKey && !e.metaKey && !e.shiftKey;
+    if(isPlainClick){
+      e.preventDefault();
+      openDetailView(detailTrigger.dataset.id);
+    }
   }
 });
 
@@ -3519,6 +3564,7 @@ function openDetailView(id, fromView){
   detailReturnView = fromView==="search" ? "search" : "home";
   currentView = "detail";
   currentDetailPostId = post.id;
+  updateSeoMetaForProduct(post);
   syncHeaderChromeVisibility();
   updateLoadMoreVisibility();
   document.getElementById("mainContent").classList.add("hidden");
@@ -3582,6 +3628,7 @@ function closeDetailView(){
   const returnToSearch = detailReturnView === "search";
   currentView = returnToSearch ? "search" : "home";
   currentDetailPostId = null;
+  resetSeoMetaToDefault();
   syncHeaderChromeVisibility();
   updateLoadMoreVisibility();
   document.getElementById("detailView").classList.add("hidden");
@@ -3664,6 +3711,66 @@ function buildLocalProductUrl(id){
   url.hash = "";
   url.searchParams.set("prod", id);
   return url.toString();
+}
+
+/* ==========================================================
+   PER-PRODUCT SEO META TAGS
+   Har product apne open hote hi apna title/description/canonical/OG
+   pa leta hai (chahe normal click se ho ya seedhe ?prod=<id> wale
+   direct link se) — taaki Google, jo page ko JS ke saath render karke
+   crawl karta hai, har listing ko ek alag, sahi title/description
+   wala page maane, sirf ek generic homepage jaisa nahi. Yeh sirf
+   Google Search indexing ke liye kaam karta hai — WhatsApp/Facebook
+   ke "link preview" bots JS execute nahi karte, isliye unke liye
+   sirf <head> mein static defaults hi dikhte hain (og-image.png
+   waali). Individual product ka apna social-preview image dikhaane
+   ke liye ek server/Cloud Function chahiye hoga, jo GitHub Pages
+   (pure static hosting) par possible nahi hai.
+   ========================================================== */
+const DEFAULT_SEO_META = {
+  title: document.title,
+  description: document.querySelector('meta[name="description"]')?.getAttribute("content") || "",
+  ogImage: document.querySelector('meta[property="og:image"]')?.getAttribute("content") || ""
+};
+
+function setMetaTagContent(selector, value){
+  const el = document.querySelector(selector);
+  if(el && value) el.setAttribute("content", value);
+}
+
+function updateSeoMetaForProduct(post){
+  const priceTxt = formatPrice(post.price);
+  const seoTitle = `${post.title} — ${priceTxt} | ReShop India`;
+  const rawDesc = (post.description || "").trim();
+  const seoDesc = (rawDesc ? `${rawDesc} ` : "") + `${priceTxt} • ${post.location} • ReShop India par uplabdh.`;
+  const shareUrl = buildShareUrl(post.id);
+  const productImage = post.images && post.images[0] ? post.images[0] : DEFAULT_SEO_META.ogImage;
+
+  document.title = seoTitle;
+  setMetaTagContent('meta[name="description"]', seoDesc.slice(0,160));
+  setMetaTagContent('meta[property="og:title"]', seoTitle);
+  setMetaTagContent('meta[property="og:description"]', seoDesc.slice(0,160));
+  setMetaTagContent('meta[property="og:url"]', shareUrl);
+  setMetaTagContent('meta[property="og:image"]', productImage);
+  setMetaTagContent('meta[name="twitter:title"]', seoTitle);
+  setMetaTagContent('meta[name="twitter:description"]', seoDesc.slice(0,160));
+  setMetaTagContent('meta[name="twitter:image"]', productImage);
+  const canonicalEl = document.querySelector('link[rel="canonical"]');
+  if(canonicalEl) canonicalEl.setAttribute("href", shareUrl);
+}
+
+function resetSeoMetaToDefault(){
+  document.title = DEFAULT_SEO_META.title;
+  setMetaTagContent('meta[name="description"]', DEFAULT_SEO_META.description);
+  setMetaTagContent('meta[property="og:title"]', DEFAULT_SEO_META.title);
+  setMetaTagContent('meta[property="og:description"]', DEFAULT_SEO_META.description);
+  setMetaTagContent('meta[property="og:url"]', PRODUCTION_SITE_URL);
+  setMetaTagContent('meta[property="og:image"]', DEFAULT_SEO_META.ogImage);
+  setMetaTagContent('meta[name="twitter:title"]', DEFAULT_SEO_META.title);
+  setMetaTagContent('meta[name="twitter:description"]', DEFAULT_SEO_META.description);
+  setMetaTagContent('meta[name="twitter:image"]', DEFAULT_SEO_META.ogImage);
+  const canonicalEl = document.querySelector('link[rel="canonical"]');
+  if(canonicalEl) canonicalEl.setAttribute("href", PRODUCTION_SITE_URL);
 }
 
 async function shareProduct(id){
