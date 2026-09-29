@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://reshopindiaofficial-website.github.io/official-site/sitemap.xml
