@@ -16,7 +16,7 @@
 <!-- Favicon: small brand "R" mark embedded directly as a data URI, so no
      separate image file is needed for the tab icon to work. -->
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABnUlEQVR4nGNkwAYaMv9jFacGaJjOiMxlRJWkocU4HMI0IJYj2cc4IJYjASbCSmjtgAH0PcQBAwwG3AEsxCp0UFBj2B9fgCH+598/hg8/vjFcfvWMYdnl0wzzzx9n+Pv/H9EOoDgEWJiYGES4eBgcFdQYZvtGMywOSiBJP9kOCFw5k4GxMYtBfkINw8671+DikTomDKZS8rR3AAw8+viOoXbfZhQxCxlF+jmAgYGB4dnnj6iGMjLiUEkjB0jzCaDwr795QT8HyPIJMjQ5+sD5554/Zthz7wbR+onOhuhgfXg6Cv8/w3+GNdfOM2RvXcHw7z/xhStVCyIBDk4GFiZmkvRQlA3ZW/IYvJZOZfjw4zsDIwMjg6uSJsOWqCwGFibijaUoBH79/cOw/c5VhoIdq+FiRpKyDDlmDvRxAAwsvnSS4cqrZ3B+pY07AzcrG/0c8O//f4b6A1vgfDFuXoY8c0f6OYCBgYFh3fULDOeeP4bzS61dGfjZOQnqYxxtkIw6YNQB6H01+jtggAHEAQMVCg3TGZmQOfS2nIGBgQEABoNxFWrY17YAAAAASUVORK5CYII=">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" href="logo.png">
 <!-- Canonical: kept static so non-JS crawlers (WhatsApp/Facebook link
      previews) also see it correctly. Per-product pages override this
      via JS (see updateSeoMetaForProduct) for real browsers/Googlebot,
@@ -25,21 +25,21 @@
 <link rel="canonical" href="https://reshopindiaofficial-website.github.io/official-site/">
 <!-- Open Graph / WhatsApp / Facebook share preview (static defaults —
      these bots don't run JavaScript, so this is what every shared
-     homepage link will show). og-image.png must be uploaded to the
+     homepage link will show). logo.png must be uploaded to the
      repo root alongside this file for the preview photo to appear. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ReShop India">
 <meta property="og:title" content="ReShop India — Buy &amp; Sell Pre-Loved Goods">
 <meta property="og:description" content="ReShop India — apna khud ka bazaar. Buy and sell used goods across India.">
 <meta property="og:url" content="https://reshopindiaofficial-website.github.io/official-site/">
-<meta property="og:image" content="https://reshopindiaofficial-website.github.io/official-site/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image" content="https://reshopindiaofficial-website.github.io/official-site/logo.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
 <meta property="og:locale" content="en_IN">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ReShop India — Buy &amp; Sell Pre-Loved Goods">
 <meta name="twitter:description" content="ReShop India — apna khud ka bazaar. Buy and sell used goods across India.">
-<meta name="twitter:image" content="https://reshopindiaofficial-website.github.io/official-site/og-image.png">
+<meta name="twitter:image" content="https://reshopindiaofficial-website.github.io/official-site/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
@@ -3934,7 +3934,7 @@ function buildLocalProductUrl(id){
    wala page maane, sirf ek generic homepage jaisa nahi. Yeh sirf
    Google Search indexing ke liye kaam karta hai — WhatsApp/Facebook
    ke "link preview" bots JS execute nahi karte, isliye unke liye
-   sirf <head> mein static defaults hi dikhte hain (og-image.png
+   sirf <head> mein static defaults hi dikhte hain (logo.png
    waali). Individual product ka apna social-preview image dikhaane
    ke liye ek server/Cloud Function chahiye hoga, jo GitHub Pages
    (pure static hosting) par possible nahi hai.
@@ -4153,7 +4153,7 @@ function buildInstallIcon(size){
   return canvas.toDataURL("image/png");
 }
 
-function setupInstallManifest(){
+function applyInstallManifest(icons){
   try{
     const manifest = {
       name: "ReShop India",
@@ -4163,10 +4163,7 @@ function setupInstallManifest(){
       display: "standalone",
       background_color: "#F7F8FA",
       theme_color: "#008069",
-      icons: [
-        { src: buildInstallIcon(192), sizes: "192x192", type: "image/png", purpose: "any maskable" },
-        { src: buildInstallIcon(512), sizes: "512x512", type: "image/png", purpose: "any maskable" }
-      ]
+      icons: icons
     };
     const blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -4178,6 +4175,28 @@ function setupInstallManifest(){
     }
     link.href = url;
   }catch(e){ console.error("Manifest setup failed", e); }
+}
+
+function setupInstallManifest(){
+  // Install icon = repo mein rakha logo.png (index.html ke saath, kam se kam 192x192,
+  // best 512x512 square). Agar logo.png nahi mila ya chhota hai, to pehle jaisa
+  // canvas se bana "R" icon use hota hai, taaki install kabhi na tootey.
+  const generated = [
+    { src: buildInstallIcon(192), sizes: "192x192", type: "image/png", purpose: "any maskable" },
+    { src: buildInstallIcon(512), sizes: "512x512", type: "image/png", purpose: "any maskable" }
+  ];
+  const logoUrl = location.origin + location.pathname.replace(/[^/]*$/, "") + "logo.png";
+  const img = new Image();
+  img.onload = ()=>{
+    const w = img.naturalWidth, h = img.naturalHeight;
+    if(w >= 192 && h >= 192){
+      applyInstallManifest([{ src: logoUrl, sizes: w + "x" + h, type: "image/png", purpose: "any" }]);
+    } else {
+      applyInstallManifest(generated);
+    }
+  };
+  img.onerror = ()=>{ applyInstallManifest(generated); };
+  img.src = logoUrl;
 }
 
 // 2) Ek minimal service worker inline register karo (Blob URL se) —
